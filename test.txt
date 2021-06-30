@@ -1,0 +1,13 @@
+The get_next_line function reads a file and returns the line ending with a
+newline character from a file descriptor. A static variable is used, so that
+whenever get_next_line is called, it remembers the previous function call.
+When get_next_line is first called, we check to see if our static variable
+**s is empty. If it is, we allocate memory for it using our buff string.
+In the loop, we will continue to read more of the line and join them together
+using a temporary string. This temporary string will replace the stored data
+each iteration so that we can keep track of how much is read and delete
+the previous stored data. This is needed because we are only reading so many
+n-bytes at a time decided by our BUFF_SIZE. If we read at each iteration
+without freeing memory, then we would have memory leaks. The loop breaks when
+a newline is encountered. Finally, we call output function to check what
+should be returned.
