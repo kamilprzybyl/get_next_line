@@ -1,51 +1,91 @@
 #include "get_next_line.h"
 
-char	*ft_strnew(size_t size)
+char	*ft_strchr(const char *s, int c)
 {
-	char	*str;
+	while (*s != '\0' && *s != c)
+		s++;
+	if (*s == c)
+		return ((char *)s);
+	return ((void *)0);
+}
+
+size_t	ft_strlen(const char *s)
+{
 	size_t	i;
 
 	i = 0;
-	str = (char *)malloc(sizeof(*str) * size + 1);
-	if (str == NULL)
-		return (NULL);
-	while (i <= size)
+	while (((char *)s)[i] != '\0')
 	{
-		str[i] = '\0';
 		i++;
 	}
-	return (str);
+	return (i);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*str;
-	int		len;
+	char	*new;
+	int		i;
+	int		j;
 
-	len = strlen(s1) + strlen(s2);
-	str = (char *)malloc(sizeof(*str) * (len + 1));
-	if (str == NULL)
+	if (!s1 || !s2)
 		return (NULL);
-	strcpy(str, s1);
-	strcat(str, s2);
+	i = 0;
+	j = 0;
+	new = (char *)malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!new)
+		return (NULL);
+	while (s1[j] != '\0')
+	{
+		new[j] = s1[j];
+		j++;
+	}
+	while (s2[i] != '\0')
+		new[j++] = s2[i++];
+	new[j] = '\0';
+	return (new);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+
+	if (!s)
+		return (NULL);
+	sub = (char *)malloc(sizeof(char) * len + 1);
+	if (!sub)
+		return (NULL);
+	if (ft_strlen(s) < start)
+		return (ft_strdup(""));
+	ft_strlcpy(sub, &s[start], len + 1);
+	return (sub);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*str;
+
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
 	return (str);
 }
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	*subs;
-	size_t	i;
+	int	i;
 
-	if (s == NULL)
-		return (NULL);
-	subs = ft_strnew(len);
-	if (subs == NULL)
-		return (NULL);
+	if (!dst)
+		return (0);
+	if (dstsize == 0)
+		return (ft_strlen(src));
 	i = 0;
-	while (i < len)
+	while (src[i] != '\0' && i < (int)dstsize - 1)
 	{
-		subs[i] = s[start + i];
+		((char *)dst)[i] = ((char *)src)[i];
 		i++;
 	}
-	return (subs);
+	if (dstsize != 0)
+		((char *)dst)[i] = '\0';
+	return (ft_strlen(src));
 }
